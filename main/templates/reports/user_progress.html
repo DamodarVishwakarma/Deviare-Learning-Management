@@ -1,0 +1,77 @@
+{% extends "reports/base.html" %}
+{% block content %}
+<div class="main_content">
+    <div class="banner">
+        <div class="banner-inline">
+            <div style="margin-top: 5px; margin-left: 5px;">
+            <img src="https://ballymununitedfc.com/img/Unknown-person.png" alt="Avatar" class="avatar"/>
+            </div>
+            <div style="margin:auto;">
+                <h1 style="color: #fff">{{full_name}}</h1>
+                <h3 style="color: #fff">Total Learning Hours: {{learning_time}}</h3>
+                <h3 style="color: #fff"> {{upated_at}}<h3>
+            </div>
+        </div>
+    </div>
+    <div>
+        <p>
+        This report provides details of the candidate’s progress and achievements for registered courses on the Deviare
+        Learning Platform. The information contained in this report based on the user activity on the learning platform.
+        </p>
+    </div>
+    <div class="post-banner">
+        <h3 style="color: #fff">Individual Course</h3>
+    </div> 
+    <div>
+        <h4>Course Name: {{course_name}}</h4>
+    </div>
+    {% for course in content  %}
+    <div class="content">
+        <div style="display: flex; flex-flow: row wrap; justify-content: space-between;">
+            <div style="margin-left: 10px"><h2>{{ course.title }}</h2></div>
+            <div style="margin: 10px">
+                {% if course.title == 'Assessments' %}
+                    {% if course.average >= 50 %}
+                    <div class="circle" style="background-color: #009d00;">
+                        <p style="color: white;">{{course.average}}%</p>
+                    </div>
+                    {% else %}
+                    <div class="circle" style="background-color: red;">
+                        <p style="color: white;">{{course.average}}%</p>
+                    </div>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+        
+        <div style="border-bottom: 6px solid gray; margin-right: 10%; margin-bottom: 20px;"></div>
+        {% for module in course.modules%}
+            <div style='margin-right: 10%; margin-left: 10%;display: flex; flex-flow: row wrap; justify-content: space-between;'>
+                
+                <div style="margin-bottom: 15px"><p>{{module.title}}</p></div>
+                {% if course.title == 'Projects' %}
+
+                    {% if module.status %}
+
+                    <div style="margin-bottom: 15px">
+                        <p style='color: #009d00;'>Passed</p>
+                    </div>
+
+                    {% else %}
+                    <div style="margin-bottom: 15px">
+                        <p style='color: red;'>Failed</p>
+                    </div>
+
+                    {% endif %}
+                {% else %}
+                <div style="margin-bottom: 15px">
+                    <p>{{module.status}}</p>
+                </div>
+                {% endif %}
+                
+            </div>
+        {% endfor %} 
+    </div>
+    {% endfor %}
+</div>
+{% endblock %} 

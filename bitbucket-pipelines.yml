@@ -1,0 +1,80 @@
+image: atlassian/pipelines-awscli
+
+pipelines:
+  default:
+   - step:
+       script:
+        - echo "This script runs on all branches that don't have any specific pipeline assigned in 'branches'."
+  branches:
+    new-develop:
+      - step:
+          script:
+            - echo "These steps run on develop branch."
+      - step:
+          name: Build API Backend
+          image: atlassian/pipelines-awscli
+          trigger: automatic
+          services:
+           - docker
+          script:
+           # Deploying an image built from pipelines
+           # - cd docker/backend/ && bash clone.sh -u "${BITBUCKET_USERNAME}" -p "${BITBUCKET_PASSWORD}"
+           - docker build -t "${BACKEND_IMAGE_NAME}":latest .
+           - $(aws ecr get-login --no-include-email --region us-west-2)
+           - docker push "${BACKEND_IMAGE_NAME}":latest
+      - step:
+          name: Deploy to Staging
+          image: atlassian/pipelines-awscli
+          deployment: staging 
+          trigger: automatic
+          services:
+           - docker
+          script:
+            - $(aws ecr get-login --no-include-email --region us-west-2)
+            - docker pull "${BACKEND_IMAGE_NAME}":latest
+            - docker run -e MIGRATE="true" -e dbhost="${STAGING_DB_HOST}" -e dbuser="${STAGING_DB_USER}" -e dbpassword="${STAGING_DB_PASSWORD}" -e dbname="${STAGING_DB_NAME}" "${BACKEND_IMAGE_NAME}":latest
+            - docker tag "${BACKEND_IMAGE_NAME}":latest "${BACKEND_IMAGE_NAME}":staging
+            - docker push "${BACKEND_IMAGE_NAME}":staging
+            - aws ecs update-service --cluster "${ECS_STAGING_CLUSTER_NAME}" --service apibackend-testing --force-new-deployment
+    master:
+      - step:
+          script:
+            - echo "These steps run on master branch."
+      - step:
+          name: Build API Backend
+          image: atlassian/pipelines-awscli
+          trigger: manual
+          services:
+           - docker
+          script:
+      # Deploying an image built from pipelines
+           #- cd docker/backend/ && bash clone.sh -u "${BITBUCKET_USERNAME}" -p "${BITBUCKET_PASSWORD}"
+           - sed -i -e 's/deviare-lp-stage/deviare-lp-prod/g' docker/backend/confd/templates/settings.py.tmpl
+           - docker build -t "${BACKEND_IMAGE_NAME}":latest .
+           - $(aws ecr get-login --no-include-email --region us-west-2)
+           - docker push "${BACKEND_IMAGE_NAME}":latest
+      - step:
+          name: Deploy to Production
+          image: atlassian/pipelines-awscli
+          deployment: production  
+          trigger: manual
+          services:
+           - docker
+          script:
+            - $(aws ecr get-login --no-include-email --region us-west-2)
+            - docker pull "${BACKEND_IMAGE_NAME}":latest
+            - docker run -e MIGRATE="true" -e dbhost="${PROD_DB_HOST}" -e dbuser="${PROD_DB_USER}" -e dbpassword="${PROD_DB_PASSWORD}" -e dbname="${PROD_DB_NAME}" "${BACKEND_IMAGE_NAME}":latest
+            - docker tag "${BACKEND_IMAGE_NAME}":latest "${BACKEND_IMAGE_NAME}":production
+            - docker push "${BACKEND_IMAGE_NAME}":production
+            - aws ecs update-service --cluster "${ECS_PRODUCTION_CLUSTER_NAME}" --service api-backend --force-new-deployment
+    test:
+      - step:
+          script:
+            - echo "These steps run on test branch."
+      - step:
+          script:
+           - mkdir -p ~/.ssh
+           - cat my_known_hosts >> ~/.ssh/known_hosts
+           - (umask  077 ; echo $MY_SSH_KEY | base64 --decode > ~/.ssh/id_rsa)
+           - ssh ubuntu@<54.87.132.145 'cd /app/enterprise/backend && git checkout test && git pull'
+           - ssh ubuntu@<54.87.132.145 'cd /app/enterprise/backend && source /app/enterprise/venv/bin/activate && ./manage.py migrate'

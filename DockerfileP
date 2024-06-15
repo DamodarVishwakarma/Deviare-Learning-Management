@@ -1,0 +1,64 @@
+FROM ubuntu:18.04
+RUN apt-get update && apt-get install -y software-properties-common
+RUN add-apt-repository ppa:deadsnakes/ppa
+ARG DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y apache2\
+    python3.7\
+    python3.7-dev\
+    libapache2-mod-wsgi-py3\
+    openssh-server\
+    libmysqlclient20\
+    libmysqlclient-dev\
+    libxmlsec1-dev\
+    git\
+    mysql-client
+
+COPY docker/backend/nginx_site /etc/nginx/sites-available/
+RUN  rm /etc/nginx/sites-enabled/* && ln -s /etc/nginx/sites-available/nginx_site /etc/nginx/sites-enabled
+
+######## ENV ###############
+ENV DJANGO_PROJECT_NAME=enterprise \
+	DJANGO_PROJECT_HOME=/app/backend/ \
+	DJANGO_LOG_DIR=/app/logs/
+    
+COPY docker/backend/app /app
+RUN chmod +x /app/bin/*
+RUN mkdir -p $DJANGO_PROJECT_HOME
+
+################### SSH Daemon #############
+COPY docker/backend/ssh/ /root/.ssh/
+RUN mkdir /var/run/sshd
+RUN /app/bin/entrypoint.sh
+
+################### CONF Daemon #############
+COPY docker/backend/confd-0.14.0-linux-amd64 /usr/local/bin/confd
+RUN chmod +x /usr/local/bin/confd
+ADD docker/backend/confd /etc/confd
+
+############ DJANGO #######################
+COPY . $DJANGO_PROJECT_HOME
+
+RUN apt-get update && apt-get install -y --no-install-recommends build-essential
+RUN cd $DJANGO_PROJECT_HOME && python3.7 -m pip install -r requirements.txt
+############ CLEAN UP #######################
+RUN apt-get purge -y build-essential binutils bzip2 cpp cpp-6 dpkg-dev g++ g++-6 gcc gcc-6 libasan3 libatomic1\
+  libc-dev-bin libc6-dev libcc1-0 libcilkrts5 libdpkg-perl libgcc-6-dev\
+  libgomp1 libisl15 libitm1 liblsan0 libmpc3 libmpx2 libquadmath0\
+  libstdc++-6-dev libtsan0 libubsan0 linux-libc-dev make patch xz-utils && apt-get autoremove -y && apt-get clean -y  && rm -rf /var/lib/apt/lists/*
+RUN rm -rf /root/.cache/pip
+
+RUN cd $DJANGO_PROJECT_HOME && mkdir static/
+RUN cd $DJANGO_PROJECT_HOME && python3.7 manage.py collectstatic --noinput
+COPY admin/ $DJANGO_PROJECT_HOME
+RUN cp -r $DJANGO_PROJECT_HOME/admin $DJANGO_PROJECT_HOME/static
+WORKDIR $DJANGO_PROJECT_HOME
+
+COPY docker/backend/start.sh /
+RUN chmod +x /start.sh
+
+EXPOSE 8080
+EXPOSE 80
+EXPOSE 22
+
+ENTRYPOINT /bin/bash /start.sh ${MIGRATE}

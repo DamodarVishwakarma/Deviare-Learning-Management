@@ -1,0 +1,11 @@
+To add all defined jobs from CRONJOBS to crontab:
+> python manage.py crontab add
+
+
+Show current active jobs:
+> python manage.py crontab show
+
+
+
+Removing all defined jobs:
+> python manage.py crontab remove

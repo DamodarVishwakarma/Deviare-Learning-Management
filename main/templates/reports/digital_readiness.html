@@ -1,0 +1,137 @@
+{% extends "reports/base_dr.html" %}
+    {% block content %}
+    <div class="main_content"></div>
+        <div class="banner">
+            <div style="margin:auto;">
+                <h1 style="color: #fff">Digital Readiness Report</h1>
+                <h3 style="color: #fff">{{full_name}}</h3>
+                <h3 style="color: #fff"> {{created_at}}<h3>
+            </div>
+        </div>
+    </div>
+    <div class="font12">
+        <p>
+        The purpose of this report is to summarise your responses to the digital readiness assessment. The information
+        contained in this document is a direct extract of your responses and has not been modified in any way.
+        </p>
+
+    <div class="grid" style=" margin-top:70px">
+    {% for entry in dimensions %}
+    {% if entry.title == 'Customer Dimension' or entry.title == 'Strategy Dimension' %}
+        <div class="grid-item">
+            <h3> {{entry.title}}: {{entry.evaluation|title}} </h3>
+            <div style="margin-top: 10px; padding: 10px; min-height: 130px">
+                <p>{{entry.description}}</p>
+            </div>
+            <div>
+            <img src={{ entry.graph }} style="width:300px;height:119px;margin: 0 auto;" alt={{entry.evaluation}}>
+            </div>
+        
+            <div>
+                <p>Key factors include</p>
+                <ul>
+                    {% for factor in entry.factors %}
+                    <li>{{factor}}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+    {% endfor %}
+    <div>
+     
+    </div>
+    </div>
+    <div class="grid">
+        {% for entry in dimensions %}
+        {% if entry.title == 'Technology Dimension' or entry.title == 'Operations Dimension' %}
+            <div class="grid-item">
+                <h3> {{entry.title}}: {{entry.evaluation|title}} </h3>
+                <div style="margin-top: 10px; padding: 10px; min-height: 130px">
+                    <p>{{entry.description}}</p>
+                </div>
+                <div>
+                <img src={{ entry.graph }} style="width:300px;height:119px;margin: 0 auto;" alt={{entry.evaluation}}>
+                </div>
+            
+                <div>
+                    <p>Key factors include</p>
+                    <ul>
+                        {% for factor in entry.factors %}
+                        <li>{{factor}}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
+        <div>
+         
+        </div>
+        </div>
+        <div class="grid">
+            {% for entry in dimensions %}
+            {% if entry.title == 'Culture Dimension' or entry.title == 'Data Dimension' %}
+                <div class="grid-item">
+                    <h3> {{entry.title}}: {{entry.evaluation|title}} </h3>
+                    <div style="margin-top: 10px; padding: 10px; min-height: 130px">
+                        <p>{{entry.description}}</p>
+                    </div>
+                    <div>
+                    <img src={{ entry.graph }} style="width:300px;height:119px;margin: 0 auto;" alt={{entry.evaluation}}>
+                    </div>
+                
+                    <div>
+                        <p>Key factors include</p>
+                        <ul>
+                            {% for factor in entry.factors %}
+                            <li>{{factor}}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                {% endif %}
+            {% endfor %}
+            <div>
+             
+            </div>
+            </div>
+    <h3>Closing the gap</h3>
+    <p>
+        The gap is the difference between your status quo and aspiration responses from the digital readiness
+        assessment. Engage our experts to leverage the Digital Readiness Assessment and advance your organisation’s
+        digital transformation journey. Contact <a href="mailto:connect@deviare.africa">connect@deviare.africa</a>.
+    </p>
+    <div style="margin: 10px 0;">
+        {% load static %}
+        <img src="/static/{{file_path}}" style="width:640px;height:480px;margin: 0 auto;"  alt="Digital-Readiness">
+    </div>
+    <div style="margin-top: 128px;">
+        {% if user_responses %}
+        <h3>User Responses</h3>
+        <div style="margin-top: 10px;">
+            <table cellpadding="0" cellspacing="0" style="width:100%" >
+            <tr><th style="width:10%">User</th>
+                <th style="width:15%">Customer</th>
+                <th style="width:15%">Strategy</th>
+                <th style="width:15%">Technology</th>
+                <th style="width:15%">Operations</th>
+                <th style="width:15%">Culture</th>
+                <th style="width:15%">Data</th>
+            </tr>
+            {% for entry in user_responses %}
+            <tr>
+                <td>{{ entry.User }}</td>
+                <td>{{ entry.Customer }}</td>
+                <td>{{ entry.Strategy }}</td>
+                <td>{{ entry.Technology }}</td>
+                <td>{{ entry.Operations }}</td>
+                <td>{{ entry.Culture }}</td>
+                <td>{{ entry.Data }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        </div>
+        </div>
+        {% endif %}
+    {% endblock %}

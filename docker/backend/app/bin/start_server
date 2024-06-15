@@ -1,0 +1,21 @@
+#!/bin/bash
+
+NAME="django_app"                                  # Name of the application
+DJANGODIR=/backend         # Django project directory
+
+USER=root                                        # the user to run as
+GROUP=root                                     # the group to run as
+NUM_WORKERS=3                                     # how many worker processes should Gunicorn spawn
+DJANGO_SETTINGS_MODULE=deviare.settings             # which settings file should Django use
+DJANGO_WSGI_MODULE=deviare.wsgi                     # WSGI module name
+
+echo "Starting $NAME as `whoami`"
+
+# Activate the virtual environment
+cd $DJANGODIR
+
+export DJANGO_SETTINGS_MODULE=$DJANGO_SETTINGS_MODULE
+export PYTHONPATH=$DJANGODIR:$PYTHONPATH
+
+exec python3.7 manage.py runserver 0.0.0.0:8000
+

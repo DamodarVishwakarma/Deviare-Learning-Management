@@ -1,0 +1,24 @@
+version: "3"
+services:
+  deviarebackend:
+    image: apibackend
+    ports:
+     - "8001:8080"
+    environment:
+     - dbname=apidb
+     - dbuser=deviareroot
+     - dbpassword=7b3368d1-5449-4629-a682-9d013db82c2a
+     - dbhost=deviaredb.cx8czfe03eic.us-west-2.rds.amazonaws.com
+     - MIGRATE=False
+  keycloak:
+    image: jboss/keycloak
+    ports:
+      - "8002:8080"
+    environment:
+      - KEYCLOAK_USER=deviareroot
+      - KEYCLOAK_PASSWORD=deviare123
+      - DB_VENDOR=mysql
+      - DB_ADDR=deviaredb.cx8czfe03eic.us-west-2.rds.amazonaws.com
+      - DB_USER=deviareroot
+      - DB_PASSWORD=7b3368d1-5449-4629-a682-9d013db82c2a
+      - DB_DATABASE=keytest

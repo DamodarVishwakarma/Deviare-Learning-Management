@@ -1,0 +1,5 @@
+DB_DATABASE=keytest
+DB_USER=deviareroot
+DB_PASSWORD=7b3368d1-5449-4629-a682-9d013db82c2a
+DB_ADDR=deviaredb1.cx8czfe03eic.us-west-2.rds.amazonaws.com
+DB_VENDOR=mysql

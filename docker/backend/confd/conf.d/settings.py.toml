@@ -1,0 +1,5 @@
+[template]
+src = "settings.py.tmpl"
+dest = "/backend/deviare/settings.py"
+
+

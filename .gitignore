@@ -1,0 +1,18 @@
+.idea
+.vscode/
+.ipynb_checkpoints/
+venv
+env/
+db.sqlite3
+main/__pycache__/
+project/__pycache__/
+main/migrations/__pycache__/
+deviare/__pycache__/
+deviare/settings/__pycache__/
+docker/backend/api-backend/
+*.ipynb
+*.pyc
+# Log Files
+*.log
+/.ipynb_checkpoints/
+test.py

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+    
+        <style>
+            body {
+                font-family: "Arial Black", Gadget, sans-serif;
+            }
+            .banner {
+                background-color: #172b4d;
+                text-align: center;
+                height: 200px;
+                padding: 10px
+            }
+            .post-banner {
+                background-color: lightgray;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .main_content {
+                padding-top: 10px;
+            }
+            .avatar {
+                vertical-align: middle;
+                width: 150px;
+                height: 150px;
+                border-radius: 50%;
+            }
+            .banner-inline {
+                display: flex;
+                flex-flow: row wrap;
+                align-items: center;
+            }
+            .content {
+                border-width: 2px;
+                border-color: darkgray;
+                border-style: dashed;
+                background-color: lightgray;
+                margin-bottom: 10px;
+
+            }
+            .circle {
+                width: 80px;
+                height: 80px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .grid {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            .grid-item {
+                width: 50%;
+                border-left: bisque;
+                border-width: 4px;
+            }
+
+
+        </style>
+    </head>
+    <body>
+        <div id="header"></div>
+        <div id="main_content">
+            {% block content%}{% endblock %}
+        </div>
+    </body>
+</html>

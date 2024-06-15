@@ -1,0 +1,68 @@
+<!-- <div style="text-align: center;"><span data-end-index="5107" data-start-index="5077" style="font-size: 20px;">Welcome to Recruiter Platform</span></div> -->
+<div style="text-align: center;">&nbsp;</div>
+<div style="text-align: center;">
+    <table align="center" border="0" cellpadding="0" cellspacing="0" data-end-index="4098" data-start-index="3982"
+           style="color: rgb(0, 0, 0); font-family: arial; font-size: 14px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; background-color: rgb(255, 255, 255); width: 600px; max-width: 600px;"
+           width="100%">
+        <tbody>
+        <tr data-end-index="4131" data-start-index="4127">
+            <td align="left" bgcolor="#FFFFFF" data-end-index="4303" data-start-index="4162" role="modules-container"
+                width="100%">
+                <table border="0" cellpadding="0" cellspacing="0" class="module" data-end-index="5321"
+                       data-start-index="5183" data-type="code" role="module" style="table-layout: fixed;" width="100%">
+                    <tbody>
+                    <tr data-end-index="5332" data-start-index="5328">
+                        <td data-end-index="5372" data-start-index="5341" height="100%" valign="top">
+                            <div data-end-index="5388" data-start-index="5383"
+                                 style="font-family: arial; font-size: 14px;">Hello Team,
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table border="0" cellpadding="0" cellspacing="0" class="module" data-end-index="5590"
+                       data-start-index="5452" data-type="text" role="module" style="table-layout: fixed;" width="100%">
+                    <tbody>
+                    <tr data-end-index="5601" data-start-index="5597">
+                        <td bgcolor="" data-end-index="5759" data-start-index="5610" height="100%"
+                            style="padding-top: 18px; padding-bottom: 18px; line-height: 22px; text-align: inherit;"
+                            valign="top">
+                            <div data-end-index="5777" data-start-index="5772"
+                                 style="font-family: arial; font-size: 14px;">A User wants to contact with us.
+                            </div>
+                        </td>
+                    </tr>
+                    <tr data-end-index="5601" data-start-index="5597">
+                        <td bgcolor="" data-end-index="5759" data-start-index="5610" height="100%"
+                            style="padding-top: 18px; padding-bottom: 18px; line-height: 22px; text-align: inherit;"
+                            valign="top">
+                            <div data-end-index="5777" data-start-index="5772"
+                                 style="font-family: arial; font-size: 14px;">User Name : {{ name }}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr data-end-index="5601" data-start-index="5597">
+                        <td bgcolor="" data-end-index="5759" data-start-index="5610" height="100%"
+                            style="padding-top: 18px; padding-bottom: 18px; line-height: 22px; text-align: inherit;"
+                            valign="top">
+                            <div data-end-index="5777" data-start-index="5772"
+                                 style="font-family: arial; font-size: 14px;">User Email : {{ email }}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr data-end-index="5601" data-start-index="5597">
+                        <td bgcolor="" data-end-index="5759" data-start-index="5610" height="100%"
+                            style="padding-top: 18px; padding-bottom: 18px; line-height: 22px; text-align: inherit;"
+                            valign="top">
+                            <div data-end-index="5777" data-start-index="5772"
+                                 style="font-family: arial; font-size: 14px;">User Message : {{ message }}
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,19 @@
+server {
+	listen 80 default_server;
+	listen [::]:80 default_server;
+	client_max_body_size 100M;
+
+	server_name _;
+	location /static/ {
+		root /app/backend/static/;
+		try_files $uri $uri/ @backend;
+	}	
+	location / {
+		proxy_pass http://127.0.0.1:8080;
+		include /etc/nginx/proxy_params;
+	}
+	location @backend {
+		proxy_pass http://127.0.0.1:8080;
+		include /etc/nginx/proxy_params;
+	}
+}

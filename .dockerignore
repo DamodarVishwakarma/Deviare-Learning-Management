@@ -1,0 +1,12 @@
+.git
+.cache
+# ignore all *.class files in all folders, including build root
+**/*.pyc
+**/*.log
+**/*__pycache__/
+.vscode/
+.idea/
+*.md
+!README*.md
+README-secret.md
+db.sqlite3
